@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bjørnedyrspil</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <label id="countdownLabel">Tid til næste katastrofe: 60 sekunder</label>
+    <div id="gameOverLabel">Du har tabt spillet!</div>
+    <div id="katastrofeLabel"></div>
+    <div id="fotosynteseCountdownLabel"></div>
+    
+
+
+    
+    <div id="Label">
+        <div id="levelLabel">Level: 0</div>
+        <label id="increasePerSecLabel">0 Per sekund</label><br>
+    </div>
+    <label id="talLabel">0</label>
+    <div id="bonusLabel">+0</div><br>
+    <div id="btnContainer">
+        <button id="fotosynteseUp" class="upgrade">Fotosyntese</button>
+        <button id="skjoldUp" class="upgrade">Skjold</button>
+        <button id="katastrofeUp" class="upgrade">Forsinkelse (200)</button><br>
+        <div id="tooltip" class="tooltip">Fotosyntese: Giver 10% af dine bjørnedyr hvert 10. sekund. Koster 100 point.</div>
+        <button id="secIncrease1Btn" class="buttons">Increase med 1 per sekund for 75</button>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>

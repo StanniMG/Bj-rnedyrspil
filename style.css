@@ -1,0 +1,111 @@
+body{
+    background-color:hsl(0, 0%, 95%);
+}
+
+#talLabel{
+    font-size: 10em;
+    font-family: Verdana;
+    text-align: center;
+    display: block;
+}
+#btnContainer{
+    text-align: center;
+}
+#klikBtn{
+    font-family: Verdana;
+    font-size: 3em;
+    text-align: center;
+    background-color: hsl(202, 100%, 50%);
+    cursor: pointer;
+    border-radius: 5px;
+    width: 300px;
+    height: 100px;
+}
+
+.buttons{
+    font-family: Verdana;
+    font-size: 1.5em;
+    text-align: center;
+    background-color: hsl(277, 100%, 50%);
+    cursor: pointer;
+    border-radius: 5px;
+    width: 500px;
+    height: 65px;
+}
+
+#Label{
+    font-size: 2em;
+    font-family: Arial;
+    text-align: center;
+    display: block;
+
+}
+
+#gameOverLabel{
+    display: none;
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 200px;
+}
+
+#katastrofeLabel{
+    display: none;
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 30px;
+}
+#bonusLabel{
+    font-size: 2em;
+    font-family: Verdana;
+    text-align: center;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.5;
+    color: hsl(120, 100%, 40%);
+}
+.tooltip {
+    position: absolute;
+    background-color: hsl(0, 0%, 20%);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1em;
+    font-family: Arial, sans-serif;
+    display: none; /* Skjult som standard */
+    z-index: 1000;
+    white-space: normal; /* Tillader linjeskift */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+.upgrade {
+    background-color: darkgray; /* Mørkegrå som standard */
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Verdana;
+    font-size: 1.3em;
+    text-align: center;
+    cursor: pointer;
+    width: 150px;
+    height: 35px;
+    border: black solid 2px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+.upgrade:disabled {
+    cursor: not-allowed; /* Når knappen ikke kan bruges */
+}
+
+.upgrade.can-buy {
+    background-color: hsl(60, 100%, 40%);
+    color: black;
+}
+
+.upgrade.purchased {
+    background-color: hsl(120, 100%, 40%); /* Grøn når den er købt */
+    color: black;
+}
