@@ -1,7 +1,6 @@
 // Labels
 const talLabel = document.getElementById("talLabel");
 const bonusLabel = document.getElementById("bonusLabel"); // Ny label til bonus
-//const increaseLabel = document.getElementById("increaseLabel");
 const increasePerSecLabel = document.getElementById("increasePerSecLabel");
 const countdownLabel = document.getElementById("countdownLabel");
 const gameOverLabel = document.getElementById("gameOverLabel");
@@ -9,6 +8,8 @@ const katastrofeLabel = document.getElementById("katastrofeLabel");
 const fotosynteseCountdownLabel = document.getElementById("fotosynteseCountdownLabel");
 const levelLabel = document.getElementById("levelLabel");
 const katastrofeTypeLabel = document.getElementById("katastrofeTypeLabel");
+const warLossPreviewLabel = document.getElementById("warLossPreviewLabel");
+
 
 // Buttons
 const klikBtn = document.getElementById("klikBtn");
@@ -19,7 +20,7 @@ const increaseBtn = document.getElementById("increase1Btn");
 const secIncrease1Btn = document.getElementById("secIncrease1Btn");
 
 // Variables
-let count = 100;
+let count = 200;
 let increase = 1;
 let increaseCost = 50;
 let plusIncrease = 1;
@@ -27,11 +28,12 @@ let increasePerSec = 2;
 let increasePerSecCost = 75;
 let plusIncreasePerSec = 1;
 
-let countdown = 60; // Tid i sekunder
+let countdown = 30; // Tid i sekunder
 let gameOver = false;
 let fotosynteseCountdown = 10; // Tid til fotosyntese-bonus
 let level = 0; // Start-level
 let baseWarLoss = 100;
+let nextCatastrophe = "Krig"; // Starter med krig
 // Upgrades
 const tooltip = document.getElementById("tooltip");
 let fotosynteseActive = false;
@@ -41,6 +43,7 @@ let skjoldCost = 100;
 let katastrofeCost = 200; // Pris for opgraderingen
 let katastrofeDelay = 0; // Forsinkelse af katastrofer
 let katastrofeUpActive = false; // Status for opgraderingen
+
 
 
 // Helper function to format numbers with a dot every three zeros
@@ -55,6 +58,13 @@ function updateUI() {
     fotosyntese.textContent = `Fotosyntese (${formatNumber(fotosynteseCost)})`;
     skjoldUp.textContent = `Skjold (${formatNumber(skjoldCost)})`;
     katastrofeUp.textContent = `Forsinkelse (${formatNumber(katastrofeCost)})`;
+    warLossPreviewLabel.textContent = `Tab ved næste krig: ${formatNumber(baseWarLoss)}`;
+    let adjustedWarLoss = baseWarLoss; // Brug kun baseWarLoss
+    if (skjoldActive) {
+        adjustedWarLoss *= 0.5; // Reducer tabene, hvis skjold er aktivt
+    }
+    warLossPreviewLabel.textContent = `Tab ved næste krig: ${formatNumber(adjustedWarLoss)}`;
+
 
     // Fotosyntese-status
     if (fotosynteseActive) {
@@ -93,14 +103,6 @@ function updateUI() {
 }
 // Initial UI setup
 updateUI();
-
-// Click event for manual increment
-/*klikBtn.onclick = function () {
-    if (!gameOver) {
-        count -= increase;
-        updateUI();
-    }
-};*/
 
 // Fotosyntese-knap
 fotosyntese.onclick = function () {
@@ -172,14 +174,6 @@ katastrofeUp.onclick = function () {
     });
 });
 
-// Buy more clicks
-/*increaseBtn.onclick = function () {
-    if (count >= increaseCost) {
-        count -= increaseCost;
-        increase += plusIncrease;
-        updateUI();
-    }
-};*/
 
 // Buy more points per second
 secIncrease1Btn.onclick = function () {
@@ -198,34 +192,34 @@ setInterval(function () {
     }
 }, 1000);
 
-// Katastrofe-håndtering med forsinkelse
 function handlePointLoss() {
     if (gameOver) return;
 
-    if (Math.random() < 0.5) {
-        count = Math.floor(count * 0.5); // Sygdom: Tab 30 %
-        katastrofeLabel.textContent = "Sygdom: Du har mistet 50% af dine bjørnedyr.";
-    } else {
-        let warLoss = baseWarLoss * Math.pow(2, level); // Krigstab øges eksponentielt
+    if (nextCatastrophe === "Krig") {
+        let warLoss = baseWarLoss; // Brug den aktuelle baseWarLoss
         if (skjoldActive) {
-            warLoss *= 0.5; // Reducer tabene til 50 %, hvis skjoldet er aktivt
+            warLoss *= 0.5; // Reducer tabene, hvis skjold er aktivt
         }
         count -= warLoss;
         katastrofeLabel.textContent = `Krig: Du har mistet ${formatNumber(warLoss)} bjørnedyr.`;
+
+        baseWarLoss *= 2; // Fordobl kun efter en krig
+    } else if (nextCatastrophe === "Sygdom") {
+        count = Math.floor(count * 0.5); // Sygdom: Tab 30 %
+        katastrofeLabel.textContent = "Sygdom: Du har mistet 50% af dine bjørnedyr.";
     }
 
-    level++;
+    level++; // Øg level efter hver katastrofe
     updateUI();
 
     katastrofeLabel.style.display = "block";
     setTimeout(() => {
         katastrofeLabel.style.display = "none";
     }, 10000);
-
+    nextCatastrophe = nextCatastrophe === "Krig" ? "Sygdom" : "Krig";
     checkGameOver();
-    countdown = 60 + katastrofeDelay; // Tilføj forsinkelse
+    countdown = 30 + katastrofeDelay; // Tilføj forsinkelse
 }
-
 
 
 // Check if the game is over
@@ -244,10 +238,9 @@ const gameTimer = setInterval(function () {
 
     if (countdown > 1) {
         countdown--;
-        countdownLabel.textContent = `Tid til næste katastrofe: ${countdown} sekunder`;
+        countdownLabel.textContent = `Tid til ${nextCatastrophe}: ${countdown} sekunder`;
     } else {
         handlePointLoss();
     }
 }, 1000);
-
 updateUI();
